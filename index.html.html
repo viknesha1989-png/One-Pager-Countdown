@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mydin <> Lark Competition One-Pager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .timer-box {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            min-width: 80px;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 4px solid #6366f1;
+        }
+
+        .progress-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            height: 12px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #6366f1, #a855f7);
+            height: 100%;
+            transition: width 1s ease-in-out;
+            width: 0%;
+        }
+
+        @keyframes pulse-custom {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .urgent {
+            animation: pulse-custom 2s infinite;
+            color: #f87171;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="max-w-2xl w-full">
+        <div class="glass-card p-8 md:p-12">
+            <!-- Header -->
+            <div class="text-center mb-10">
+                <span class="inline-block px-4 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-sm font-semibold tracking-wider uppercase mb-4">
+                    Competition Submission
+                </span>
+                <h1 class="text-2xl md:text-4xl font-extrabold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+                    Mydin <> Lark Competition One-Pager
+                </h1>
+                <p class="text-slate-400 text-lg">Deadline: May 15, 2026</p>
+            </div>
+
+            <!-- Countdown Timer -->
+            <div id="timer-container" class="grid grid-cols-4 gap-3 md:gap-6 mb-10">
+                <div class="timer-box">
+                    <div id="days" class="text-2xl md:text-4xl font-bold">00</div>
+                    <div class="text-[10px] md:text-xs uppercase tracking-widest text-slate-400 mt-1">Days</div>
+                </div>
+                <div class="timer-box">
+                    <div id="hours" class="text-2xl md:text-4xl font-bold">00</div>
+                    <div class="text-[10px] md:text-xs uppercase tracking-widest text-slate-400 mt-1">Hours</div>
+                </div>
+                <div class="timer-box">
+                    <div id="minutes" class="text-2xl md:text-4xl font-bold">00</div>
+                    <div class="text-[10px] md:text-xs uppercase tracking-widest text-slate-400 mt-1">Mins</div>
+                </div>
+                <div class="timer-box">
+                    <div id="seconds" class="text-2xl md:text-4xl font-bold text-indigo-400">00</div>
+                    <div class="text-[10px] md:text-xs uppercase tracking-widest text-slate-400 mt-1">Secs</div>
+                </div>
+            </div>
+
+            <!-- Progress -->
+            <div class="mb-10">
+                <div class="flex justify-between items-end mb-2">
+                    <span class="text-sm font-medium text-slate-300">Time remaining</span>
+                    <span id="percent-text" class="text-sm font-bold text-indigo-400">0%</span>
+                </div>
+                <div class="progress-container">
+                    <div id="progress-bar" class="progress-bar"></div>
+                </div>
+            </div>
+
+            <!-- Task List -->
+            <div class="space-y-4">
+                <h3 class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4 border-b border-slate-700 pb-2">One-Pager Checklist</h3>
+                
+                <label class="flex items-center space-x-3 cursor-pointer group">
+                    <input type="checkbox" class="w-5 h-5 rounded border-slate-700 bg-slate-800 text-indigo-500 focus:ring-indigo-500 focus:ring-offset-slate-900">
+                    <span class="text-slate-300 group-hover:text-white transition-colors">Basic Info</span>
+                </label>
+
+                <label class="flex items-center space-x-3 cursor-pointer group">
+                    <input type="checkbox" class="w-5 h-5 rounded border-slate-700 bg-slate-800 text-indigo-500 focus:ring-indigo-500 focus:ring-offset-slate-900">
+                    <span class="text-slate-300 group-hover:text-white transition-colors">Proposal Introduction</span>
+                </label>
+
+                <label class="flex items-center space-x-3 cursor-pointer group">
+                    <input type="checkbox" class="w-5 h-5 rounded border-slate-700 bg-slate-800 text-indigo-500 focus:ring-indigo-500 focus:ring-offset-slate-900">
+                    <span class="text-slate-300 group-hover:text-white transition-colors">Value Proposition</span>
+                </label>
+            </div>
+        </div>
+
+        <p class="text-center text-slate-500 text-xs mt-6 uppercase tracking-widest">Victory favors the prepared. Good luck team!</p>
+    </div>
+
+    <script>
+        const DEADLINE_DATE = new Date("May 15, 2026 23:59:59").getTime();
+        // Progress bar start reference (7 days prior)
+        const START_DATE = DEADLINE_DATE - (7 * 24 * 60 * 60 * 1000); 
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = DEADLINE_DATE - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+
+            // Progress Bar
+            const totalDuration = DEADLINE_DATE - START_DATE;
+            const elapsed = now - START_DATE;
+            let remainingPercent = 100 - Math.floor((elapsed / totalDuration) * 100);
+            
+            if (remainingPercent < 0) remainingPercent = 0;
+            if (remainingPercent > 100) remainingPercent = 100;
+
+            document.getElementById("progress-bar").style.width = remainingPercent + "%";
+            document.getElementById("percent-text").innerText = remainingPercent + "%";
+
+            if (days < 1 && distance > 0) {
+                document.getElementById("timer-container").classList.add("urgent");
+            }
+
+            if (distance < 0) {
+                clearInterval(interval);
+                document.getElementById("timer-container").innerHTML = `
+                    <div class="col-span-4 py-4 text-2xl font-bold text-red-500">DEADLINE PASSED</div>
+                `;
+            }
+        }
+
+        const interval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+</html>
